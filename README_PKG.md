@@ -10,7 +10,7 @@ Thanks to Ami Mahloof for the Python2 code (https://medium.com/@amimahloof/how-t
 
 ### Packing
 
-Copy `setup.py`, `package.py`, `MANIFEST.in`, and optionally this `README.md' to the directory containing the files you want to package.
+Copy `setup.py`, `package.py`, `MANIFEST.in`, and optionally this `README.md` (careful not to overwrite your own README) to the directory containing the files you want to package.
 
 Modify `MANIFEST.in` to include/exclude the appropriate files and directories.
   - There are comments in that file, or full documentation at https://docs.python.org/3.0/distutils/commandref.html#sdist-cmd

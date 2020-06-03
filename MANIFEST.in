@@ -1,21 +1,22 @@
-# Manifest syntax https://docs.python.org/2/distutils/sourcedist.html
+# Manifest syntax https://docs.python.org/3.0/distutils/commandref.html#sdist-cmd
+
+# 'graft' will include a directory and everything below it
 graft wheelhouse
 
+# 'recursive-exclude' will exclude all files in the first argument (directory) that match the rest of the arguments
+# 'recursive-include' is the same for including files
 recursive-exclude __pycache__  *.pyc *.pyo *.orig
-graft core
-graft data
-graft modules
-graft restores
 
+# 'include' or 'exclude' files that match the string
 exclude *.js*
 exclude *.git*
 exclude *.coveragerc
 exclude *.sh
 exclude proc*
 exclude pylint*
-include README*
-include LICENSE*
-include *.example
+#include README*
+#include LICENSE*
+#include *.example
 
 include requirements*.*
 exclude requirements-dev.*
@@ -24,8 +25,7 @@ exclude package.py
 exclude setup.py
 exclude MANIFEST.in
 
-
+# 'prune' will exclude a directory and everything below it
 prune .git
 prune venv
 prune test*
-
