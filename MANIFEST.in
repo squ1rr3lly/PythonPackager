@@ -2,6 +2,10 @@
 graft wheelhouse
 
 recursive-exclude __pycache__  *.pyc *.pyo *.orig
+graft core
+graft data
+graft modules
+graft restores
 
 exclude *.js*
 exclude *.git*
@@ -9,11 +13,17 @@ exclude *.coveragerc
 exclude *.sh
 exclude proc*
 exclude pylint*
-exclude README*
+include README*
+include LICENSE*
+include *.example
 
 include requirements*.*
 exclude requirements-dev.*
 include *.py
+exclude package.py
+exclude setup.py
+exclude MANIFEST.in
+
 
 prune .git
 prune venv

@@ -58,7 +58,7 @@ class Package(Command):
             # filter is used to remove empty list members (None).
             requirements_file.write("\n".join(filter(None, local_dependencies)))
 
-    def execute(self, command, capture_output=False):
+    def execute(self, command, capture_output=False, critical=True):
         """
         The execute command will loop and keep on reading the stdout and check for the return code
         and displays the output in real time.
@@ -83,13 +83,16 @@ class Package(Command):
 
         if return_code != 0:
             print("Error running command", command, "- exit code:", return_code)
-            raise IOError("Shell Commmand Failed")
+            if critical:
+                raise IOError("Critical Shell Commmand Failed, aborting...")
+            else:
+                print("Non-critical Shell Command Failed, continuing...")
     
         return return_code
 
-    def run_commands(self, commands):
+    def run_commands(self, commands, critical=True):
         for command in commands:
-            self.execute(command)
+            self.execute(command, critical=critical)
 
     def restore_requirements_txt(self):
         if os.path.exists("requirements.orig"):
@@ -99,7 +102,20 @@ class Package(Command):
                 "mv requirements.orig requirements.txt"
             ]
             self.run_commands(commands)
-    
+
+    def cleanup(self):
+        print("Cleaning up, adding Package files to ./dist/")
+        commands = [
+            "mv MANIFEST.in ./dist/MANIFEST.in",
+            "mv README_PKG.md ./dist/README_PKG.md",
+            "mv package.py ./dist/package.py",
+            "mv setup.py ./dist/setup.py",
+            "rm -r wheelhouse",
+            "rm -r *.egg-info",
+            "rm -r __pycache__"
+        ]
+        self.run_commands(commands, False)
+
     def run(self):
         commands = []
         commands.extend([
@@ -116,4 +132,6 @@ class Package(Command):
         print("Packing code and wheelhouse into dist")
         self.run_commands(["python3 setup.py sdist"])
         self.restore_requirements_txt()
+        self.cleanup()
+        print("Finished. --- Generated package in ./dist/ folder.")
 
